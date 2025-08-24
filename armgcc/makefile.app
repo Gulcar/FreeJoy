@@ -29,6 +29,7 @@ C_SOURCES =  \
 ../application/Src/buttons.c \
 ../utils/crc16.c \
 ../application/Src/encoders.c \
+../application/Src/hx711.c \
 ../application/Src/config.c \
 ../application/Src/leds.c \
 ../application/Src/main.c \

@@ -83,6 +83,9 @@ typedef struct
 
 enum
 {
+	SOURCE_HX711_A_128 = -6,
+	SOURCE_HX711_A_64 = -5,
+	SOURCE_HX711_B_32 = -4,
 	SOURCE_ENCODER = -3,
 	SOURCE_I2C = -2,
 	SOURCE_NO = -1,
@@ -170,6 +173,9 @@ enum
 	
 	MLX90363_CS,
 	SHIFT_REG_CLK,
+
+	HX711_DT,
+	HX711_SCK,
 };
 typedef int8_t pin_t;
 

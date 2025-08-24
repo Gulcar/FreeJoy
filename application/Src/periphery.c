@@ -24,6 +24,7 @@
   */
 
 #include "periphery.h"
+#include "hx711.h"
 
 /* define compiler specific symbols */
 #if defined ( __CC_ARM   )
@@ -510,6 +511,22 @@ void IO_Init (dev_config_t * p_dev_config)
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 			GPIO_InitStructure.GPIO_Pin = pin_config[i].pin;
 			GPIO_Init(pin_config[i].port, &GPIO_InitStructure);
+		}
+		else if (p_dev_config->pins[i] == HX711_DT)
+		{
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+			GPIO_InitStructure.GPIO_Pin = pin_config[i].pin;
+			GPIO_Init(pin_config[i].port, &GPIO_InitStructure);
+			HX711_SetDTPin(pin_config[i].port, pin_config[i].pin);
+		}
+		else if (p_dev_config->pins[i] == HX711_SCK)
+		{
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+			GPIO_InitStructure.GPIO_Pin = pin_config[i].pin;
+			GPIO_Init(pin_config[i].port, &GPIO_InitStructure);
+			HX711_SetSCKPin(pin_config[i].port, pin_config[i].pin);
 		}
 		else if (p_dev_config->pins[i] == NOT_USED)
 		{

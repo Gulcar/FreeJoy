@@ -26,6 +26,7 @@
 
 #include <string.h>
 #include <math.h>
+#include <stdbool.h>
 #include "tle5011.h"
 #include "tle5012.h"
 #include "mcp320x.h"
@@ -36,6 +37,7 @@
 #include "as5600.h"
 #include "buttons.h"
 #include "encoders.h"
+#include "hx711.h"
 
 sensor_t sensors[MAX_AXIS_NUM];	
 uint16_t adc_data[MAX_AXIS_NUM];
@@ -995,6 +997,29 @@ void AxesProcess (dev_config_t * p_dev_config)
 			}
 			
 			raw_axis_data[i] = tmp[i];
+		}
+		else if (source == SOURCE_HX711_A_128 || source == SOURCE_HX711_A_64 || source == SOURCE_HX711_B_32)
+		{
+			if (HX711_DataReady(source))
+			{
+				int8_t next_hx711_source = source;
+				for (uint8_t j = i + 1; j != i; j++)
+				{
+					if (j >= MAX_AXIS_NUM)
+					{
+						j = 0;
+					}
+
+					int8_t s = p_dev_config->axis_config[j].source_main;
+					if (s == SOURCE_HX711_A_128 || s == SOURCE_HX711_A_64 || s == SOURCE_HX711_B_32)
+					{
+						next_hx711_source = s;
+						break;
+					}
+				}
+
+				raw_axis_data[i] = HX711_ReadValue(next_hx711_source);
+			}
 		}
 		
 		
